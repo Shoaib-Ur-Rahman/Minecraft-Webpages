@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://shoaib-ur-rahman.github.io/Minecraft-Webpages/sitemap.xml
