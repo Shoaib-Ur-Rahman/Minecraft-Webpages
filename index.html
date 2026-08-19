@@ -3,27 +3,32 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Shoaib's Minecraft modpacks, Fabric setups, performance mods and Minecraft downloads.">
-  <meta name="keywords" content="Minecraft modpacks, Minecraft Fabric, Fabric 1.21, Minecraft mods, Shoaib Minecraft">
-  <meta name="author" content="Shoaib Ur Rahman">
+  <meta name="description" content="vexor_10's Minecraft modpacks, Fabric setups, performance mods and Minecraft downloads.">
+  <meta name="keywords" content="Minecraft modpacks, Minecraft Fabric, Fabric 1.21, Minecraft mods, vexor_10 Minecraft">
+  <meta name="author" content="vexor_10">
   <meta name="robots" content="index, follow">
   <meta name="googlebot" content="index, follow">
   <link rel="canonical" href="https://shoaib-ur-rahman.github.io/Minecraft-Webpages/">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Shoaib's Minecraft Modpacks">
-  <meta property="og:description" content="A clean home for Shoaib's Minecraft modpacks, Fabric setups and downloads.">
+  <meta property="og:title" content="vexor_10 | Minecraft Modpacks">
+  <meta property="og:description" content="Minecraft modpacks, Fabric setups, performance mods and downloads by vexor_10.">
   <meta property="og:url" content="https://shoaib-ur-rahman.github.io/Minecraft-Webpages/">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Shoaib's Minecraft Modpacks">
-  <meta name="twitter:description" content="Minecraft modpacks, Fabric setups and downloads by Shoaib.">
-  <title>Shoaib's Minecraft Modpacks | Fabric Packs & Downloads</title>
+  <meta name="twitter:title" content="vexor_10 | Minecraft Modpacks">
+  <meta name="twitter:description" content="Minecraft modpacks, Fabric setups and downloads by vexor_10.">
+  <title>vexor_10 | Minecraft Modpacks & Downloads</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="hero">
     <nav class="nav wrap">
-      <a class="brand" href="./">Shoaib<span>.MC</span></a>
-      <a class="github" href="https://github.com/Shoaib-Ur-Rahman/Minecraft-Webpages" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="brand" href="./">vexor<span>_10</span></a>
+      <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu">☰</button>
+      <div id="site-menu" class="site-menu" hidden>
+        <a href="#modpacks">Modpacks</a>
+        <a href="#about">About</a>
+        <a href="https://github.com/Shoaib-Ur-Rahman/Minecraft-Webpages" target="_blank" rel="noopener">Source on GitHub ↗</a>
+      </div>
     </nav>
 
     <div class="hero-content wrap">
@@ -41,7 +46,6 @@
           <p class="eyebrow">COLLECTION</p>
           <h2>Modpacks</h2>
         </div>
-        <span class="count">Ready to expand</span>
       </div>
 
       <div class="grid">
@@ -58,30 +62,41 @@
           </div>
           <div class="actions">
             <a class="button primary" href="#">Download</a>
-            <a class="button secondary" href="https://github.com/Shoaib-Ur-Rahman/Minecraft-Webpages" target="_blank" rel="noopener">Files</a>
+            <a class="button secondary" href="#">Details</a>
           </div>
-        </article>
-
-        <article class="card empty-card">
-          <div class="plus">+</div>
-          <h3>More packs coming</h3>
-          <p>Add your next survival, PvP, technical or performance pack here.</p>
         </article>
       </div>
     </section>
 
-    <section class="section info-section">
+    <section id="about" class="section info-section">
       <div>
         <p class="eyebrow">ABOUT</p>
         <h2>Simple. Fast. Mine.</h2>
       </div>
-      <p>This page is a static GitHub Pages site, so there is no server to keep running. Update the repository and GitHub Pages publishes the changes.</p>
+      <p>My Minecraft modpacks and setups, collected in one place. Download links will be added as packs are published.</p>
     </section>
   </main>
 
   <footer class="footer wrap">
-    <span>© 2026 Shoaib</span>
-    <a href="https://github.com/Shoaib-Ur-Rahman/Minecraft-Webpages" target="_blank" rel="noopener">View source ↗</a>
+    <span>© 2026 vexor_10</span>
   </footer>
+
+  <script>
+    const button = document.querySelector('.menu-button');
+    const menu = document.querySelector('#site-menu');
+    button.addEventListener('click', () => {
+      const open = !menu.hasAttribute('hidden');
+      if (open) {
+        menu.setAttribute('hidden', '');
+      } else {
+        menu.removeAttribute('hidden');
+      }
+      button.setAttribute('aria-expanded', String(!open));
+    });
+    menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      menu.setAttribute('hidden', '');
+      button.setAttribute('aria-expanded', 'false');
+    }));
+  </script>
 </body>
 </html>
