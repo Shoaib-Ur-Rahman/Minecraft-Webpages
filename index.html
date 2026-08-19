@@ -8,6 +8,7 @@
   <meta name="author" content="vexor_10">
   <meta name="robots" content="index, follow">
   <meta name="googlebot" content="index, follow">
+  <meta name="google-site-verification" content="FCRjwa0Yp_5JdlXOcM71mgyMXlVhEYDp6vkczvAMWAY">
   <link rel="canonical" href="https://shoaib-ur-rahman.github.io/Minecraft-Webpages/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="vexor_10 | Minecraft Modpacks">
@@ -30,7 +31,6 @@
         <a href="https://github.com/Shoaib-Ur-Rahman/Minecraft-Webpages" target="_blank" rel="noopener">Source on GitHub ↗</a>
       </div>
     </nav>
-
     <div class="hero-content wrap">
       <p class="eyebrow">MINECRAFT • MODPACKS • COLLECTION</p>
       <h1>Play your way.</h1>
@@ -38,65 +38,29 @@
       <a class="button primary" href="#modpacks">Browse modpacks ↓</a>
     </div>
   </header>
-
   <main class="wrap">
     <section id="modpacks" class="section">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">COLLECTION</p>
-          <h2>Modpacks</h2>
-        </div>
-      </div>
-
+      <div class="section-heading"><div><p class="eyebrow">COLLECTION</p><h2>Modpacks</h2></div></div>
       <div class="grid">
         <article class="card featured-card">
-          <div class="card-top">
-            <span class="tag">FABRIC</span>
-            <span class="version">1.21.x</span>
-          </div>
+          <div class="card-top"><span class="tag">FABRIC</span><span class="version">1.21.x</span></div>
           <h3>My Minecraft Pack</h3>
           <p>A personal Fabric setup focused on performance, useful mods and a smooth survival experience.</p>
-          <div class="card-meta">
-            <span>⚙ Fabric</span>
-            <span>⚡ Performance</span>
-          </div>
-          <div class="actions">
-            <a class="button primary" href="#">Download</a>
-            <a class="button secondary" href="#">Details</a>
-          </div>
+          <div class="card-meta"><span>⚙ Fabric</span><span>⚡ Performance</span></div>
+          <div class="actions"><a class="button primary" href="#">Download</a><a class="button secondary" href="#">Details</a></div>
         </article>
       </div>
     </section>
-
     <section id="about" class="section info-section">
-      <div>
-        <p class="eyebrow">ABOUT</p>
-        <h2>Simple. Fast. Mine.</h2>
-      </div>
+      <div><p class="eyebrow">ABOUT</p><h2>Simple. Fast. Mine.</h2></div>
       <p>My Minecraft modpacks and setups, collected in one place. Download links will be added as packs are published.</p>
     </section>
   </main>
-
-  <footer class="footer wrap">
-    <span>© 2026 vexor_10</span>
-  </footer>
-
+  <footer class="footer wrap"><span>© 2026 vexor_10</span></footer>
   <script>
-    const button = document.querySelector('.menu-button');
-    const menu = document.querySelector('#site-menu');
-    button.addEventListener('click', () => {
-      const open = !menu.hasAttribute('hidden');
-      if (open) {
-        menu.setAttribute('hidden', '');
-      } else {
-        menu.removeAttribute('hidden');
-      }
-      button.setAttribute('aria-expanded', String(!open));
-    });
-    menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
-      menu.setAttribute('hidden', '');
-      button.setAttribute('aria-expanded', 'false');
-    }));
+    const button=document.querySelector('.menu-button');const menu=document.querySelector('#site-menu');
+    button.addEventListener('click',()=>{const open=!menu.hasAttribute('hidden');if(open)menu.setAttribute('hidden','');else menu.removeAttribute('hidden');button.setAttribute('aria-expanded',String(!open));});
+    menu.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{menu.setAttribute('hidden','');button.setAttribute('aria-expanded','false');}));
   </script>
 </body>
 </html>
