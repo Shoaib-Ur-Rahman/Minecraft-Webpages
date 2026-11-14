@@ -2,70 +2,68 @@
   const config = window.MINECRAFT_CATALOG;
   if (!config) return;
 
-  // Public downloadable assets live in the separate files repository.
   const owner = 'Shoaib-Ur-Rahman';
   const repo = 'Minecraft_Files';
+  const branch = 'main';
+  const folder = config.folder || config.category;
   const list = document.querySelector('#file-list');
   const status = document.querySelector('#catalog-status');
   const search = document.querySelector('#catalog-search');
   let entries = [];
 
-  function matchesCategory(asset, release) {
-    const file = asset.name.toLowerCase();
-    const title = `${release.name || ''} ${release.tag_name || ''}`.toLowerCase();
-    const combined = `${file} ${title}`;
-    switch (config.category) {
-      case 'schematics': return /\.(litematic|schem|schematic)$/.test(file) || /schematic/.test(title);
-      case 'resource-packs': return /resource.?pack|texture.?pack/.test(combined) || /\.(mcpack|mcaddon)$/.test(file);
-      case 'shaderpacks': return /shader/.test(combined) || /\.shaderpack$/.test(file);
-      case 'xaero-maps': return /xaero|world.?map|map.?backup/.test(combined);
-      case 'modpacks': return /mod.?pack/.test(combined) || /\.mrpack$/.test(file);
-      default: return false;
-    }
-  }
+  const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[char]);
 
   function sizeLabel(bytes) {
     if (!Number.isFinite(bytes)) return '';
     const units = ['B', 'KB', 'MB', 'GB'];
-    let value = bytes, unit = 0;
+    let value = bytes;
+    let unit = 0;
     while (value >= 1024 && unit < units.length - 1) { value /= 1024; unit++; }
     return `${value.toFixed(unit ? 1 : 0)} ${units[unit]}`;
   }
 
   function render(items) {
     if (!items.length) {
-      list.innerHTML = `<p class="empty-message">No ${config.title.toLowerCase()} are listed yet. The file owner needs to publish a release with assets in the Minecraft_Files repository.</p>`;
+      list.innerHTML = `<p class="empty-message">No ${escapeHtml(config.title.toLowerCase())} are in the <code>${escapeHtml(folder)}/</code> folder yet.</p>`;
       return;
     }
-    list.innerHTML = `<div class="file-grid">${items.map(({ asset, release }) => {
-      const image = /\.(png|jpe?g|webp|gif)$/i.test(asset.name);
-      const label = image ? 'Preview image' : (asset.name.split('.').pop() || 'file').toUpperCase();
-      const preview = image ? `<a href="${asset.browser_download_url}" target="_blank" rel="noopener noreferrer"><img class="file-preview" src="${asset.browser_download_url}" alt="Preview: ${asset.name}" loading="lazy"></a>` : '';
-      const size = sizeLabel(asset.size);
-      const releaseName = release.name || release.tag_name;
-      return `<article class="file-card">${preview}<span class="file-kind">${config.icon} ${label}</span><h3>${asset.name}</h3><p>${releaseName}${size ? ` · ${size}` : ''}</p><a class="button primary" href="${asset.browser_download_url}">Download ${image ? 'image' : 'file'}</a></article>`;
+
+    list.innerHTML = `<div class="file-grid">${items.map((file) => {
+      const image = /\.(png|jpe?g|webp|gif)$/i.test(file.name);
+      const extension = file.name.includes('.') ? file.name.split('.').pop().toUpperCase() : 'FILE';
+      const downloadUrl = escapeHtml(file.download_url);
+      const filename = escapeHtml(file.name);
+      const preview = image
+        ? `<a href="${downloadUrl}" target="_blank" rel="noopener noreferrer"><img class="file-preview" src="${downloadUrl}" alt="Preview: ${filename}" loading="lazy"></a>`
+        : '';
+      const size = sizeLabel(file.size);
+      return `<article class="file-card">${preview}<span class="file-kind">${escapeHtml(config.icon)} ${extension}</span><h3>${filename}</h3><p>${size || 'Minecraft file'}</p><a class="button primary" href="${downloadUrl}" download>Download ${extension}</a></article>`;
     }).join('')}</div>`;
   }
 
   async function load() {
     try {
-      const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/releases?per_page=100`, { headers: { Accept: 'application/vnd.github+json' } });
-      if (!response.ok) throw new Error(`GitHub API status ${response.status}`);
-      const releases = await response.json();
-      entries = releases.filter((release) => !release.draft).flatMap((release) =>
-        (release.assets || []).filter((asset) => asset.state === 'uploaded' && matchesCategory(asset, release)).map((asset) => ({ asset, release }))
-      );
+      const endpoint = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(folder)}?ref=${branch}`;
+      const response = await fetch(endpoint, { headers: { Accept: 'application/vnd.github+json' } });
+      if (!response.ok) throw new Error(`GitHub API returned ${response.status}`);
+      const contents = await response.json();
+      entries = contents
+        .filter((item) => item.type === 'file' && item.name.toLowerCase() !== 'readme.md' && item.download_url)
+        .sort((a, b) => a.name.localeCompare(b.name));
       status.textContent = `${entries.length} file${entries.length === 1 ? '' : 's'} in this collection.`;
       render(entries);
+
       if (search) search.addEventListener('input', () => {
         const query = search.value.trim().toLowerCase();
-        const filtered = entries.filter(({ asset, release }) => `${asset.name} ${release.name || ''} ${release.tag_name || ''}`.toLowerCase().includes(query));
+        const filtered = entries.filter((file) => file.name.toLowerCase().includes(query));
         status.textContent = `${filtered.length} of ${entries.length} file${entries.length === 1 ? '' : 's'}.`;
         render(filtered);
       });
     } catch (error) {
-      status.textContent = 'Could not load the catalog right now.';
-      list.innerHTML = '<p class="empty-message">Could not load public downloads. Try again later.</p>';
+      status.textContent = 'Could not load this folder.';
+      list.innerHTML = `<p class="empty-message">Could not read the public <code>${escapeHtml(folder)}/</code> folder. Check that the files repository is public and try again later.</p>`;
     }
   }
 
