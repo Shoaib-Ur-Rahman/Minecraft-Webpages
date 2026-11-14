@@ -8,26 +8,45 @@
   <title>Control Panel | vexor_10</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    .panel-wrap { max-width: 1000px; margin: 0 auto; }
+    .panel-wrap { max-width: 1080px; margin: 0 auto; }
     .panel-box { padding: clamp(22px, 4vw, 36px); border: 1px solid var(--line); border-radius: 20px; background: linear-gradient(145deg,var(--panel-2),var(--panel)); box-shadow: var(--shadow); }
     .login-box { max-width: 480px; margin: 0 auto; }
     .login-box form { display: grid; gap: 14px; margin-top: 20px; }
     .login-box label { color: var(--muted); font-weight: 700; }
-    .login-box input { min-height: 46px; padding: 0 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); color: var(--text); font: inherit; }
+    .login-box input, .settings-input { min-height: 46px; padding: 0 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); color: var(--text); font: inherit; }
     .error { min-height: 1.4em; color: #ff9a9a; }
     [hidden] { display: none !important; }
-    .dashboard-head { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin-bottom: 24px; }
-    .dashboard-head p { color: var(--muted); margin: 8px 0 0; }
-    .dashboard-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
-    .control-card { padding: 22px; border: 1px solid var(--line); border-radius: 15px; background: rgba(255,255,255,.025); display: flex; flex-direction: column; min-height: 190px; }
-    .control-card:hover { border-color: var(--accent); }
-    .control-card .icon { color: var(--accent); font-size: 1.5rem; }
-    .control-card h3 { margin: 12px 0 8px; font-size: 1.3rem; }
-    .control-card p { color: var(--muted); margin: 0 0 18px; }
-    .control-card .button { margin-top: auto; align-self: flex-start; }
-    .notice { margin-top: 22px; padding: 14px 16px; border-left: 3px solid var(--accent); border-radius: 8px; background: rgba(120,224,143,.08); color: var(--muted); }
-    .notice strong { color: var(--text); }
-    @media(max-width:650px) { .dashboard-grid { grid-template-columns: 1fr; } .dashboard-head { align-items: flex-start; flex-direction: column; } }
+    .dashboard-head { display:flex; justify-content:space-between; align-items:center; gap:18px; margin-bottom:24px; }
+    .dashboard-head p { color:var(--muted); margin:8px 0 0; }
+    .dash-nav { display:flex; flex-wrap:wrap; gap:8px; padding:8px; margin-bottom:24px; border:1px solid var(--line); border-radius:14px; background:rgba(255,255,255,.02); }
+    .dash-tab { border:1px solid transparent; border-radius:9px; padding:10px 14px; color:var(--muted); background:transparent; font:inherit; font-weight:700; cursor:pointer; }
+    .dash-tab[aria-selected="true"] { color:var(--text); background:var(--panel-2); border-color:var(--line); }
+    .dash-tab:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+    .stats-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-bottom:22px; }
+    .stat-card { padding:18px; border:1px solid var(--line); border-radius:14px; background:rgba(255,255,255,.025); }
+    .stat-card span { display:block; color:var(--muted); font-size:.82rem; }
+    .stat-card strong { display:block; margin-top:7px; color:var(--accent); font:700 1.7rem "Space Grotesk",sans-serif; }
+    .dashboard-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+    .control-card { padding:22px; border:1px solid var(--line); border-radius:15px; background:rgba(255,255,255,.025); display:flex; flex-direction:column; min-height:210px; transition:border-color .2s,transform .2s; }
+    .control-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+    .control-card .icon { color:var(--accent); font-size:1.5rem; }
+    .control-card h3 { margin:12px 0 8px; font-size:1.3rem; }
+    .control-card p { color:var(--muted); margin:0 0 12px; }
+    .folder-status { color:var(--muted); font-size:.8rem; margin-bottom:14px; }
+    .control-card .button { margin-top:auto; align-self:flex-start; }
+    .toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin:0 0 18px; }
+    .toolbar .settings-input { flex:1 1 220px; }
+    .status-line { color:var(--muted); font-size:.88rem; }
+    .preferences { display:grid; gap:14px; }
+    .preference-row { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:18px 0; border-bottom:1px solid var(--line); }
+    .preference-row:last-child { border-bottom:0; }
+    .preference-row p { margin:5px 0 0; color:var(--muted); font-size:.88rem; }
+    .preference-row input { width:20px; height:20px; accent-color:var(--accent); flex:0 0 auto; }
+    .notice { margin-top:22px; padding:14px 16px; border-left:3px solid var(--accent); border-radius:8px; background:rgba(120,224,143,.08); color:var(--muted); }
+    .notice strong { color:var(--text); }
+    .compact .control-card { min-height:165px; padding:16px; }
+    .reduced-motion *, .reduced-motion *::before, .reduced-motion *::after { scroll-behavior:auto !important; animation-duration:.01ms !important; transition-duration:.01ms !important; }
+    @media(max-width:650px) { .dashboard-grid,.stats-grid { grid-template-columns:1fr; } .dashboard-head { align-items:flex-start; flex-direction:column; } }
   </style>
 </head>
 <body>
@@ -39,7 +58,7 @@
     <div class="hero-content wrap" style="padding-top:35px">
       <p class="eyebrow">PRIVATE-BY-LINK CONTROL PANEL</p>
       <h1 style="font-size:clamp(3rem,8vw,5rem)">Dashboard</h1>
-      <p class="subtitle">Manage the file library and choose where to upload new content.</p>
+      <p class="subtitle">Manage your file library, check folder contents, and adjust this dashboard.</p>
     </div>
   </header>
 
@@ -58,17 +77,52 @@
 
     <section id="dashboard" class="panel-box" hidden>
       <div class="dashboard-head">
-        <div><p class="eyebrow">LIBRARY CONTROLS</p><h2>Manage your files</h2><p>Select a category to upload files into its folder.</p></div>
+        <div><p class="eyebrow">LIBRARY CONTROLS</p><h2>Manage your files</h2><p>Choose an area below to manage your catalog.</p></div>
         <button id="logout" class="button secondary" type="button">Log out</button>
       </div>
-      <div class="dashboard-grid">
-        <article class="control-card"><span class="icon" aria-hidden="true">▦</span><h3>Schematics</h3><p>Upload .litematic, .schem, .schematic files and preview images.</p><a class="button primary" href="https://github.com/Shoaib-Ur-Rahman/Minecraft_Files/tree/main/schematics" target="_blank" rel="noopener noreferrer">Open folder ↗</a></article>
-        <article class="control-card"><span class="icon" aria-hidden="true">▧</span><h3>Resource packs</h3><p>Upload resource packs and texture packs.</p><a class="button primary" href="https://github.com/Shoaib-Ur-Rahman/Minecraft_Files/tree/main/resource-packs" target="_blank" rel="noopener noreferrer">Open folder ↗</a></article>
-        <article class="control-card"><span class="icon" aria-hidden="true">✦</span><h3>Shaderpacks</h3><p>Upload shader files and related previews.</p><a class="button primary" href="https://github.com/Shoaib-Ur-Rahman/Minecraft_Files/tree/main/shaderpacks" target="_blank" rel="noopener noreferrer">Open folder ↗</a></article>
-        <article class="control-card"><span class="icon" aria-hidden="true">⌖</span><h3>Xaero map files</h3><p>Zip map folders before uploading. Only share world data you intend to make public.</p><a class="button primary" href="https://github.com/Shoaib-Ur-Rahman/Minecraft_Files/tree/main/xaero-maps" target="_blank" rel="noopener noreferrer">Open folder ↗</a></article>
-        <article class="control-card"><span class="icon" aria-hidden="true">⚙</span><h3>Modpacks</h3><p>Upload modpack files and include version details in the filename.</p><a class="button primary" href="https://github.com/Shoaib-Ur-Rahman/Minecraft_Files/tree/main/modpacks" target="_blank" rel="noopener noreferrer">Open folder ↗</a></article>
-      </div>
-      <p class="notice"><strong>How uploads work:</strong> after opening a folder, use GitHub’s “Add file → Upload files,” then commit. These controls do not upload directly from this page. The password is a simple browser-side gate and is visible in the page source; it does not secure public files or replace GitHub permissions.</p>
+
+      <nav class="dash-nav" role="tablist" aria-label="Dashboard sections">
+        <button class="dash-tab" type="button" role="tab" id="tab-overview" aria-controls="section-overview" aria-selected="true" data-tab="overview">Overview</button>
+        <button class="dash-tab" type="button" role="tab" id="tab-uploads" aria-controls="section-uploads" aria-selected="false" data-tab="uploads">File folders</button>
+        <button class="dash-tab" type="button" role="tab" id="tab-preferences" aria-controls="section-preferences" aria-selected="false" data-tab="preferences">Preferences</button>
+      </nav>
+
+      <section id="section-overview" role="tabpanel" aria-labelledby="tab-overview">
+        <div class="stats-grid">
+          <article class="stat-card"><span>Category folders</span><strong>5</strong></article>
+          <article class="stat-card"><span>Files found</span><strong id="files-total">—</strong></article>
+          <article class="stat-card"><span>Last checked</span><strong id="last-checked" style="font-size:1rem">Not checked</strong></article>
+        </div>
+        <div class="toolbar"><button id="refresh-folders" class="button primary" type="button">↻ Check folders</button><a class="button secondary" href="./">View public website ↗</a><span id="refresh-status" class="status-line" aria-live="polite">Folder counts load when checked.</span></div>
+        <h3 style="margin:26px 0 14px">Quick actions</h3>
+        <div class="dashboard-grid">
+          <article class="control-card"><span class="icon" aria-hidden="true">⬆</span><h3>Upload a file</h3><p>Open the correct category folder and use GitHub’s “Add file → Upload files”.</p><button class="button secondary" type="button" data-open-tab="uploads">Choose a folder →</button></article>
+          <article class="control-card"><span class="icon" aria-hidden="true">◉</span><h3>Check the catalog</h3><p>Open the public page and confirm the file appears in its category.</p><a class="button secondary" href="./">Preview website ↗</a></article>
+        </div>
+      </section>
+
+      <section id="section-uploads" role="tabpanel" aria-labelledby="tab-uploads" hidden>
+        <div class="toolbar"><input id="folder-search" class="settings-input" type="search" placeholder="Filter categories…" aria-label="Filter upload categories"><span class="status-line">Select a folder, upload, then commit on GitHub.</span></div>
+        <div class="dashboard-grid" id="folder-grid">
+          <article class="control-card" data-category="schematics"><span class="icon" aria-hidden="true">▦</span><h3>Schematics</h3><p>Build files and optional preview images.</p><span class="folder-status" data-count="schematics">Count not checked</span><a class="button primary" href="https://github.com/Shoaib-Ur-Rahman/Minecraft_Files/tree/main/schematics" target="_blank" rel="noopener noreferrer">Open folder ↗</a></article>
+          <article class="control-card" data-category="resource packs"><span class="icon" aria-hidden="true">▧</span><h3>Resource packs</h3><p>Resource and texture packs.</p><span class="folder-status" data-count="resource-packs">Count not checked</span><a class="button primary" href="https://github.com/Shoaib-Ur-Rahman/Minecraft_Files/tree/main/resource-packs" target="_blank" rel="noopener noreferrer">Open folder ↗</a></article>
+          <article class="control-card" data-category="shaderpacks"><span class="icon" aria-hidden="true">✦</span><h3>Shaderpacks</h3><p>Shader files and related previews.</p><span class="folder-status" data-count="shaderpacks">Count not checked</span><a class="button primary" href="https://github.com/Shoaib-Ur-Rahman/Minecraft_Files/tree/main/shaderpacks" target="_blank" rel="noopener noreferrer">Open folder ↗</a></article>
+          <article class="control-card" data-category="xaero maps"><span class="icon" aria-hidden="true">⌖</span><h3>Xaero map files</h3><p>Zip map folders before uploading; only share world data meant to be public.</p><span class="folder-status" data-count="xaero-maps">Count not checked</span><a class="button primary" href="https://github.com/Shoaib-Ur-Rahman/Minecraft_Files/tree/main/xaero-maps" target="_blank" rel="noopener noreferrer">Open folder ↗</a></article>
+          <article class="control-card" data-category="modpacks"><span class="icon" aria-hidden="true">⚙</span><h3>Modpacks</h3><p>Pack files and version information.</p><span class="folder-status" data-count="modpacks">Count not checked</span><a class="button primary" href="https://github.com/Shoaib-Ur-Rahman/Minecraft_Files/tree/main/modpacks" target="_blank" rel="noopener noreferrer">Open folder ↗</a></article>
+        </div>
+      </section>
+
+      <section id="section-preferences" role="tabpanel" aria-labelledby="tab-preferences" hidden>
+        <h3>Dashboard preferences</h3>
+        <p style="color:var(--muted)">These options apply only in this browser and do not change the public website.</p>
+        <div class="preferences">
+          <label class="preference-row"><span><strong>Compact folder cards</strong><p>Use a tighter layout in the folder controls.</p></span><input id="compact-toggle" type="checkbox"></label>
+          <label class="preference-row"><span><strong>Reduce motion</strong><p>Turn off most decorative transitions in this dashboard.</p></span><input id="motion-toggle" type="checkbox"></label>
+        </div>
+        <div class="toolbar" style="margin-top:24px"><button id="reset-preferences" class="button secondary" type="button">Reset dashboard preferences</button></div>
+      </section>
+
+      <p class="notice"><strong>Note:</strong> this is a lightweight browser dashboard. Its password check is client-side and visible in the page source; it is not real security. GitHub account permissions control who can upload to the public files repository.</p>
     </section>
   </main>
   <footer class="footer wrap"><span>© 2026 vexor_10</span></footer>
@@ -79,6 +133,8 @@
     const loginPanel = document.querySelector('#login-panel');
     const dashboard = document.querySelector('#dashboard');
     const sessionKey = 'vexor_dashboard_open';
+    const preferenceKey = 'vexor_dashboard_preferences';
+    const categories = ['schematics', 'resource-packs', 'shaderpacks', 'xaero-maps', 'modpacks'];
 
     function showDashboard() {
       loginPanel.hidden = true;
@@ -86,7 +142,63 @@
       sessionStorage.setItem(sessionKey, 'yes');
     }
 
+    function selectTab(name) {
+      document.querySelectorAll('.dash-tab').forEach((tab) => {
+        const selected = tab.dataset.tab === name;
+        tab.setAttribute('aria-selected', String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+      });
+      document.querySelectorAll('[role="tabpanel"]').forEach((panel) => {
+        panel.hidden = panel.id !== `section-${name}`;
+      });
+    }
+
+    function loadPreferences() {
+      let prefs = {};
+      try { prefs = JSON.parse(localStorage.getItem(preferenceKey) || '{}'); } catch (_) { prefs = {}; }
+      document.querySelector('#compact-toggle').checked = Boolean(prefs.compact);
+      document.querySelector('#motion-toggle').checked = Boolean(prefs.reduceMotion);
+      document.querySelector('#folder-grid').classList.toggle('compact', Boolean(prefs.compact));
+      document.body.classList.toggle('reduced-motion', Boolean(prefs.reduceMotion));
+    }
+
+    function savePreferences() {
+      const prefs = {
+        compact: document.querySelector('#compact-toggle').checked,
+        reduceMotion: document.querySelector('#motion-toggle').checked
+      };
+      localStorage.setItem(preferenceKey, JSON.stringify(prefs));
+      loadPreferences();
+    }
+
+    async function refreshFolderCounts() {
+      const button = document.querySelector('#refresh-folders');
+      const status = document.querySelector('#refresh-status');
+      button.disabled = true;
+      status.textContent = 'Checking public folders…';
+      let total = 0;
+      try {
+        const results = await Promise.all(categories.map(async (category) => {
+          const response = await fetch(`https://api.github.com/repos/Shoaib-Ur-Rahman/Minecraft_Files/contents/${category}?ref=main`, { headers: { Accept: 'application/vnd.github+json' } });
+          if (!response.ok) throw new Error('Folder check failed');
+          const contents = await response.json();
+          const count = contents.filter((item) => item.type === 'file' && item.name.toLowerCase() !== 'readme.md').length;
+          document.querySelector(`[data-count="${category}"]`).textContent = `${count} file${count === 1 ? '' : 's'} found`;
+          return count;
+        }));
+        total = results.reduce((sum, count) => sum + count, 0);
+        document.querySelector('#files-total').textContent = total;
+        document.querySelector('#last-checked').textContent = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+        status.textContent = 'Folder status updated.';
+      } catch (_) {
+        status.textContent = 'Could not check every folder. They may still be opened directly.';
+      } finally {
+        button.disabled = false;
+      }
+    }
+
     if (sessionStorage.getItem(sessionKey) === 'yes') showDashboard();
+    loadPreferences();
 
     document.querySelector('#login-form').addEventListener('submit', (event) => {
       event.preventDefault();
@@ -104,6 +216,22 @@
       dashboard.hidden = true;
       loginPanel.hidden = false;
       document.querySelector('#panel-password').value = '';
+    });
+
+    document.querySelectorAll('.dash-tab').forEach((tab) => tab.addEventListener('click', () => selectTab(tab.dataset.tab)));
+    document.querySelectorAll('[data-open-tab]').forEach((button) => button.addEventListener('click', () => selectTab(button.dataset.openTab)));
+    document.querySelector('#refresh-folders').addEventListener('click', refreshFolderCounts);
+    document.querySelector('#folder-search').addEventListener('input', (event) => {
+      const query = event.target.value.trim().toLowerCase();
+      document.querySelectorAll('#folder-grid [data-category]').forEach((card) => {
+        card.hidden = !card.dataset.category.includes(query);
+      });
+    });
+    document.querySelector('#compact-toggle').addEventListener('change', savePreferences);
+    document.querySelector('#motion-toggle').addEventListener('change', savePreferences);
+    document.querySelector('#reset-preferences').addEventListener('click', () => {
+      localStorage.removeItem(preferenceKey);
+      loadPreferences();
     });
   </script>
 </body>
