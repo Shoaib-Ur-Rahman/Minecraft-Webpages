@@ -2,10 +2,8 @@
 
 A static GitHub Pages website for browsing Minecraft downloads.
 
-## Publishing downloads
+## Uploading files
 
-The public collection pages read files attached to public GitHub Releases. Create a release, attach assets such as `.litematic`, `.schem`, resource pack, shaderpack, or modpack files, and publish it. Put a category name such as `Schematics`, `Resource Packs`, `Shaderpacks`, `Xaero Maps`, or `Modpacks` in the release title/tag so files can be categorized.
+Downloadable files are stored in the separate `Shoaib-Ur-Rahman/Minecraft_Files` repository, in category folders: `schematics/`, `resource-packs/`, `shaderpacks/`, `xaero-maps/`, and `modpacks/`. The public collection pages read those folders through the GitHub contents API and link to each file directly. No Releases are used.
 
-## Settings and security
-
-The Settings link opens `admin.html`, which explains how to publish releases. GitHub Pages is static hosting; it cannot securely authenticate an admin or upload files on its own. A real private upload dashboard requires a backend/authentication service. Never put GitHub tokens, credentials, or real passwords in frontend code.
+The Settings page is `admin.html`; it is intentionally not linked from the public homepage and uses `noindex`. This only makes it less discoverable, not private. GitHub account permissions control who can upload to the files repository. Never put passwords or access tokens in this public website.
