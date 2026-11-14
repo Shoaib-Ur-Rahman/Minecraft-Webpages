@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Minecraft downloads and build collection by vexor_10.">
+  <meta name="author" content="vexor_10">
+  <meta name="robots" content="index, follow">
+  <title>vexor_10 | Minecraft Downloads</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <nav class="nav wrap" aria-label="Main navigation">
+      <a class="brand" href="./">vexor<span>_10</span></a>
+      <div class="hero-actions">
+        <a class="button secondary" href="admin.html">⚙ Settings</a>
+      </div>
+    </nav>
+    <div class="hero-content wrap">
+      <p class="eyebrow">MINECRAFT • BUILDS • CUSTOMIZATION</p>
+      <h1>Play your way.</h1>
+      <p class="subtitle">Browse big Minecraft collections, including schematics, resource packs, shaderpacks, modpacks, and map files.</p>
+      <div class="hero-actions">
+        <a class="button primary" href="#collections">Browse collections ↓</a>
+        <a class="button secondary" href="https://github.com/Shoaib-Ur-Rahman/Minecraft-Webpages/releases" target="_blank" rel="noopener noreferrer">Release archive</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="collections" class="section">
+      <div class="section-heading">
+        <div><p class="eyebrow">THE LIBRARY</p><h2>Browse collections</h2></div>
+      </div>
+      <div id="collection-list" class="grid collection-grid"></div>
+    </section>
+
+    <section id="about" class="section info-section">
+      <div><p class="eyebrow">ABOUT</p><h2>Made for Minecraft</h2></div>
+      <p>Use the settings page to edit collections and add download links. This is a browser-based admin dashboard for quick updates and content management.</p>
+    </section>
+  </main>
+
+  <footer class="footer wrap">
+    <span>© 2026 vexor_10</span>
+    <a href="https://github.com/Shoaib-Ur-Rahman/Minecraft-Webpages/releases" target="_blank" rel="noopener noreferrer">View releases ↗</a>
+  </footer>
+
+  <script src="site-data.js"></script>
+  <script>
+    const CATEGORY_META = {
+      schematics: { title: 'Schematics', icon: '▦', description: 'Build files and structure plans.' },
+      'resource-packs': { title: 'Resource packs', icon: '▧', description: 'Textures, sounds, and UI customization.' },
+      shaderpacks: { title: 'Shaderpacks', icon: '✦', description: 'Lighting and graphic effects.' },
+      'xaero-maps': { title: 'Xaero map files', icon: '⌖', description: 'World map data and backups.' },
+      modpacks: { title: 'Modpacks', icon: '⚙', description: 'Pack files and setup downloads.' }
+    };
+
+    function renderCollections() {
+      const data = window.MINECRAFT_SITE.loadData();
+      const groups = {};
+      data.files.forEach((file) => {
+        if (!groups[file.category]) groups[file.category] = [];
+        groups[file.category].push(file);
+      });
+
+      const collectionList = document.getElementById('collection-list');
+      collectionList.innerHTML = Object.keys(CATEGORY_META).map((category) => {
+        const meta = CATEGORY_META[category];
+        const count = (groups[category] || []).length;
+        return `
+          <a class="card collection-card" href="${category}.html">
+            <span class="tag">${meta.title.toUpperCase()}</span>
+            <span class="collection-icon">${meta.icon}</span>
+            <h3>${meta.title}</h3>
+            <p>${meta.description}</p>
+            <span class="collection-link">${count} file${count === 1 ? '' : 's'} · Open collection →</span>
+          </a>
+        `;
+      }).join('');
+    }
+
+    renderCollections();
+  </script>
+</body>
+</html>
