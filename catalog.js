@@ -1,8 +1,10 @@
 (() => {
   const config = window.MINECRAFT_CATALOG;
   if (!config) return;
+
+  // Public downloadable assets live in the separate files repository.
   const owner = 'Shoaib-Ur-Rahman';
-  const repo = 'Minecraft-Webpages';
+  const repo = 'Minecraft_Files';
   const list = document.querySelector('#file-list');
   const status = document.querySelector('#catalog-status');
   const search = document.querySelector('#catalog-search');
@@ -32,7 +34,7 @@
 
   function render(items) {
     if (!items.length) {
-      list.innerHTML = `<p class="empty-message">No ${config.title.toLowerCase()} have been published yet. Check back later, or <a href="https://github.com/${owner}/${repo}/releases">visit the release archive</a>.</p>`;
+      list.innerHTML = `<p class="empty-message">No ${config.title.toLowerCase()} are listed yet. The file owner needs to publish a release with assets in the Minecraft_Files repository.</p>`;
       return;
     }
     list.innerHTML = `<div class="file-grid">${items.map(({ asset, release }) => {
@@ -43,12 +45,6 @@
       const releaseName = release.name || release.tag_name;
       return `<article class="file-card">${preview}<span class="file-kind">${config.icon} ${label}</span><h3>${asset.name}</h3><p>${releaseName}${size ? ` · ${size}` : ''}</p><a class="button primary" href="${asset.browser_download_url}">Download ${image ? 'image' : 'file'}</a></article>`;
     }).join('')}</div>`;
-  }
-
-  function safeText(value) {
-    const span = document.createElement('span');
-    span.textContent = value;
-    return span.innerHTML;
   }
 
   async function load() {
@@ -69,8 +65,9 @@
       });
     } catch (error) {
       status.textContent = 'Could not load the catalog right now.';
-      list.innerHTML = `<p class="empty-message">The download list could not be loaded. Please try again later or <a href="https://github.com/${owner}/${repo}/releases">open the release archive</a>.</p>`;
+      list.innerHTML = '<p class="empty-message">Could not load public downloads. Try again later.</p>';
     }
   }
+
   load();
 })();

@@ -27,24 +27,24 @@
     <div class="hero-content wrap" style="padding-top: 40px;">
       <p class="eyebrow">SITE SETTINGS</p>
       <h1 style="font-size:clamp(3rem,8vw,5rem)">Manage downloads</h1>
-      <p class="subtitle">Publish files as release assets; the collection pages display public downloads from those releases.</p>
+      <p class="subtitle">Publish files in the separate files repository; the collection pages display public downloads from its releases.</p>
     </div>
   </header>
   <main class="wrap section settings-content">
     <section class="settings-card" aria-labelledby="upload-heading">
       <p class="eyebrow">PUBLISH A FILE</p>
-      <h2 id="upload-heading">Upload through GitHub Releases</h2>
-      <p>This website is hosted as a static GitHub Pages site. It has no private server, so it cannot securely accept uploads, store a private admin password, or change the public catalog from a browser-only settings form. The earlier demo password panel was not secure and would only save changes in one browser; it has been removed.</p>
-      <p><strong>To publish files so visitors can see and download them:</strong></p>
+      <h2 id="upload-heading">Upload through a release</h2>
+      <p>The website code and downloadable files are kept in separate repositories. Upload public Minecraft files as assets in a GitHub Release in the files repository. The website collection pages read those releases and show download buttons.</p>
+      <p><strong>To publish files:</strong></p>
       <ol>
-        <li>Click <strong>Create a new release</strong> below.</li>
-        <li>Give the release a clear category name in its title or tag, such as <code>Schematics</code>, <code>Resource Packs</code>, <code>Shaderpacks</code>, <code>Xaero Maps</code>, or <code>Modpacks</code>.</li>
+        <li>Create a release in the files repository.</li>
+        <li>Give it a clear category title/tag, such as <code>Schematics</code>, <code>Resource Packs</code>, <code>Shaderpacks</code>, <code>Xaero Maps</code>, or <code>Modpacks</code>.</li>
         <li>Attach the actual files. Individual <code>.litematic</code> and <code>.schem</code> files are fine; folders such as map data should be zipped first.</li>
-        <li>Publish the release. The matching collection page will read its public assets and show download buttons.</li>
+        <li>Publish the release. Matching assets will appear on the corresponding collection page.</li>
       </ol>
-      <p class="warning"><strong>About a real private admin page:</strong> uploading from this page and changing a password securely requires an authentication and storage backend. Do not enter a password or GitHub token into a static webpage. Until a backend is configured, use GitHub’s own signed-in release form to manage uploads.</p>
-      <p><a class="button primary" href="https://github.com/Shoaib-Ur-Rahman/Minecraft-Webpages/releases/new" target="_blank" rel="noopener noreferrer">Create a release ↗</a></p>
-      <p><a href="https://github.com/Shoaib-Ur-Rahman/Minecraft-Webpages/releases" target="_blank" rel="noopener noreferrer">View existing releases</a></p>
+      <p class="warning"><strong>Password safety:</strong> this is static GitHub Pages hosting, so a password stored in its HTML/JavaScript would be public and is not a real access lock. Do not commit passwords or access tokens. Use GitHub’s signed-in release form to manage uploads; a private upload dashboard requires a backend.</p>
+      <p><a class="button primary" href="https://github.com/Shoaib-Ur-Rahman/Minecraft_Files/releases/new" target="_blank" rel="noopener noreferrer">Create a release ↗</a></p>
+      <p><a href="https://github.com/Shoaib-Ur-Rahman/Minecraft_Files/releases" target="_blank" rel="noopener noreferrer">View existing file releases</a></p>
     </section>
   </main>
   <footer class="footer wrap"><span>© 2026 vexor_10</span><a href="./">Home</a></footer>
